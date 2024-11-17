@@ -1,0 +1,37 @@
+# System files and folders
+.DS_Store
+Thumbs.db
+
+# PyCharm configuration files
+.idea/
+
+# Python cache files
+*.pyc
+*.pyo
+*.pyd
+__pycache__/
+
+# Log and temporary files
+*.log
+*.tmp
+
+# Virtual environments
+env/
+venv/
+ENV/
+.VENV/
+
+# Compiled binaries
+*.so
+*.dll
+*.exe
+*.out
+*.o
+
+# Secrets and sensitive files
+*.env
+*.key
+*.crt
+
+# Other artifacts
+*.swp
