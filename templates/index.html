@@ -9,77 +9,59 @@
 <body>
     <div class="calculator">
         <h1>Calculator</h1>
+        <!-- Дисплей для отображения текущего ввода -->
+        <div class="display">{{ display_text if display_text is not none else "0" }}</div>
         <form method="post" action="/calculate">
-            <div class="display">{{ result if result is not none else "0" }}</div>
             <div class="buttons">
                 <!-- Number Buttons -->
-                <button type="button" class="num-btn" onclick="addNumber(7)">7</button>
-                <button type="button" class="num-btn" onclick="addNumber(8)">8</button>
-                <button type="button" class="num-btn" onclick="addNumber(9)">9</button>
-                <button type="button" class="op-btn" onclick="setOperation('div')">÷</button>
+                <button type="button" class="num-btn" onclick="addToDisplay('7')">7</button>
+                <button type="button" class="num-btn" onclick="addToDisplay('8')">8</button>
+                <button type="button" class="num-btn" onclick="addToDisplay('9')">9</button>
+                <button type="button" class="op-btn" onclick="addToDisplay(' / ')">÷</button>
 
-                <button type="button" class="num-btn" onclick="addNumber(4)">4</button>
-                <button type="button" class="num-btn" onclick="addNumber(5)">5</button>
-                <button type="button" class="num-btn" onclick="addNumber(6)">6</button>
-                <button type="button" class="op-btn" onclick="setOperation('mul')">×</button>
+                <button type="button" class="num-btn" onclick="addToDisplay('4')">4</button>
+                <button type="button" class="num-btn" onclick="addToDisplay('5')">5</button>
+                <button type="button" class="num-btn" onclick="addToDisplay('6')">6</button>
+                <button type="button" class="op-btn" onclick="addToDisplay(' * ')">×</button>
 
-                <button type="button" class="num-btn" onclick="addNumber(1)">1</button>
-                <button type="button" class="num-btn" onclick="addNumber(2)">2</button>
-                <button type="button" class="num-btn" onclick="addNumber(3)">3</button>
-                <button type="button" class="op-btn" onclick="setOperation('sub')">−</button>
+                <button type="button" class="num-btn" onclick="addToDisplay('1')">1</button>
+                <button type="button" class="num-btn" onclick="addToDisplay('2')">2</button>
+                <button type="button" class="num-btn" onclick="addToDisplay('3')">3</button>
+                <button type="button" class="op-btn" onclick="addToDisplay(' - ')">−</button>
 
-                <button type="button" class="num-btn" onclick="addNumber(0)">0</button>
+                <button type="button" class="num-btn" onclick="addToDisplay('0')">0</button>
                 <button type="button" class="op-btn" onclick="clearDisplay()">C</button>
                 <button type="button" class="op-btn" onclick="calculateResult()">=</button>
-                <button type="button" class="op-btn" onclick="setOperation('sum')">+</button>
+                <button type="button" class="op-btn" onclick="addToDisplay(' + ')">+</button>
             </div>
-            <!-- Hidden Fields to Submit -->
-            <input type="hidden" id="arg1" name="arg1">
-            <input type="hidden" id="arg2" name="arg2">
-            <input type="hidden" id="op" name="op">
+            <!-- Hidden Field to Submit -->
+            <input type="hidden" id="expression" name="expression">
         </form>
     </div>
 
     <script>
-        let displayValue = '';
-        let currentOperation = null;
-        let firstOperand = null;
+        let displayValue = ''; // Stores the current input
 
-        function addNumber(num) {
-            displayValue += num;
-            updateDisplay(displayValue);
+        // Updates the display when a button is clicked
+        function addToDisplay(value) {
+            displayValue += value;
+            updateDisplay();
         }
 
-        function setOperation(op) {
-            if (firstOperand === null) {
-                firstOperand = parseFloat(displayValue);
-                currentOperation = op;
-                displayValue = '';
-            } else {
-                alert('Operation already selected');
-            }
+        // Updates the display element
+        function updateDisplay() {
+            document.querySelector('.display').textContent = displayValue || '0';
         }
 
-        function updateDisplay(value) {
-            document.querySelector('.display').textContent = value || '0';
-        }
-
+        // Clears the display
         function clearDisplay() {
             displayValue = '';
-            currentOperation = null;
-            firstOperand = null;
-            updateDisplay('0');
+            updateDisplay();
         }
 
+        // Submits the calculation to the server
         function calculateResult() {
-            const secondOperand = parseFloat(displayValue);
-            if (firstOperand === null || currentOperation === null) {
-                alert('Enter numbers and operation first');
-                return;
-            }
-            document.getElementById('arg1').value = firstOperand;
-            document.getElementById('arg2').value = secondOperand;
-            document.getElementById('op').value = currentOperation;
+            document.getElementById('expression').value = displayValue;
             document.querySelector('form').submit();
         }
     </script>
